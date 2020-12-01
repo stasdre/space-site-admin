@@ -10,6 +10,7 @@ function* authWatcher() {
 export function* authFlow(action) {
   const { email, password } = action.payload;
   const { accessToken, message } = yield call(signin, email, password);
+
   if (accessToken) {
     yield put(authSuccess(accessToken));
   } else {

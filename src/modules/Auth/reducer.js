@@ -7,7 +7,7 @@ const isAuthorized = handleActions(
     [authSuccess]: () => true,
     [logOut]: () => false,
   },
-  false
+  true
 );
 
 const accessToken = handleActions(

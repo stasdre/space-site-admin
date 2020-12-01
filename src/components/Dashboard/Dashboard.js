@@ -9,6 +9,7 @@ import {
   SoundOutlined,
 } from '@ant-design/icons';
 import { Reviews, Services, Works } from '../Sections';
+import { ServiceCreate } from '../Sections/Services';
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -42,6 +43,7 @@ const Dashboard = () => (
         >
           <Switch>
             <Route exact path="/services" component={Services} />
+            <Route exact path="/services/create" component={ServiceCreate} />
             <Route exact path="/works" component={Works} />
             <Route exact path="/reviews" component={Reviews} />
           </Switch>
