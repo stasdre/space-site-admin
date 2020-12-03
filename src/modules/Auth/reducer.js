@@ -5,9 +5,10 @@ import { authRequest, authSuccess, authFailure, logOut } from './actions';
 const isAuthorized = handleActions(
   {
     [authSuccess]: () => true,
+    [authFailure]: () => false,
     [logOut]: () => false,
   },
-  true
+  false
 );
 
 const accessToken = handleActions(
@@ -29,13 +30,4 @@ const isLoading = handleActions(
   false
 );
 
-const authError = handleActions(
-  {
-    [authRequest]: () => '',
-    [authFailure]: (_state, action) => action.payload,
-    [authSuccess]: () => '',
-  },
-  ''
-);
-
-export default combineReducers({ isAuthorized, accessToken, isLoading, authError });
+export default combineReducers({ isAuthorized, accessToken, isLoading });

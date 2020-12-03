@@ -17,21 +17,41 @@ function* workWatcher() {
 
 export function* workCreateFlow(action) {
   try {
-    const { data, message } = yield call(create, action.payload);
+    yield call(create, action.payload);
     yield put(workCreateSuccess());
+    yield put(
+      showNotification({
+        type: 'success',
+        content: 'Новая работа создана',
+      })
+    );
   } catch (error) {
+    const { data } = error;
+
     yield put(workCreateFailure());
-    yield put(showNotification({ type: 'error', content: 'Что-то пошло не так (:' }));
+    yield put(
+      showNotification({
+        type: 'error',
+        content: data.message || 'Что-то пошло не так (:',
+      })
+    );
   }
 }
 
-export function* workGetAllFlow(action) {
+export function* workGetAllFlow() {
   try {
     const { data } = yield call(getAll);
     yield put(workGetAllSuccess(data));
   } catch (error) {
+    const { data } = error;
+
     yield put(workGetAllFailure());
-    yield put(showNotification({ type: 'error', content: 'Что-то пошло не так (:' }));
+    yield put(
+      showNotification({
+        type: 'error',
+        content: data.message || 'Что-то пошло не так (:',
+      })
+    );
   }
 }
 

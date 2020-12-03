@@ -15,9 +15,22 @@ export function* servicesCreateFlow(action) {
   try {
     yield call(create, action.payload);
     yield put(seviceCreateSuccess());
+    yield put(
+      showNotification({
+        type: 'success',
+        content: 'Новая услуга создана',
+      })
+    );
   } catch (error) {
+    const { data } = error;
+
     yield put(seviceCreateFailure());
-    yield put(showNotification({ type: 'error', content: 'Что-то пошло не так (:' }));
+    yield put(
+      showNotification({
+        type: 'error',
+        content: data.message || 'Что-то пошло не так (:',
+      })
+    );
   }
 }
 

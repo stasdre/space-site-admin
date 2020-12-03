@@ -28,7 +28,6 @@ const ServiceForm = ({ workGetAllRequest, seviceCreateRequest, works }) => {
   }, []);
 
   const handleSubmit = (values) => {
-    console.log('SUBMIT!!!', values);
     seviceCreateRequest(values);
   };
 

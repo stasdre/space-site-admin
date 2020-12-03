@@ -12,7 +12,8 @@ import {
 const works = handleActions(
   {
     [workGetAllRequest]: () => [],
-    [workGetAllSuccess]: (_state, action) => [...action.payload],
+    [workGetAllSuccess]: (_state, action) =>
+      action.payload.map((work) => ({ ...work, key: work.id })),
     [workGetAllFailure]: () => [],
   },
   []

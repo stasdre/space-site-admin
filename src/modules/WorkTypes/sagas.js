@@ -12,8 +12,15 @@ export function* typesGetFlow() {
     const { data } = yield call(getAll);
     yield put(workTypesSuccess(data));
   } catch (error) {
+    const { data } = error;
+
     yield put(workTypesFailure());
-    yield put(showNotification({ type: 'error', content: 'Что-то пошло не так (:' }));
+    yield put(
+      showNotification({
+        type: 'error',
+        content: data.message || 'Что-то пошло не так (:',
+      })
+    );
   }
 }
 

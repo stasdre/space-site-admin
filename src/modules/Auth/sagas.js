@@ -8,14 +8,26 @@ function* authWatcher() {
 }
 
 export function* authFlow(action) {
-  const { email, password } = action.payload;
-  const { accessToken, message } = yield call(signin, email, password);
+  try {
+    const { accessToken } = yield call(signin, action.payload);
 
-  if (accessToken) {
     yield put(authSuccess(accessToken));
-  } else {
-    yield put(authFailure(message));
-    yield put(showNotification({ type: 'error', content: message }));
+    yield put(
+      showNotification({
+        type: 'success',
+        content: 'Welcome! :)',
+      })
+    );
+  } catch (error) {
+    const { data } = error;
+
+    yield put(authFailure());
+    yield put(
+      showNotification({
+        type: 'error',
+        content: data.message || 'Что-то пошло не так (:',
+      })
+    );
   }
 }
 
