@@ -11,16 +11,6 @@ const isAuthorized = handleActions(
   false
 );
 
-const accessToken = handleActions(
-  {
-    [authSuccess]: (_state, action) => action.payload,
-    [authFailure]: () => '',
-    [logOut]: () => '',
-    [authRequest]: () => '',
-  },
-  ''
-);
-
 const isLoading = handleActions(
   {
     [authRequest]: () => true,
@@ -30,4 +20,4 @@ const isLoading = handleActions(
   false
 );
 
-export default combineReducers({ isAuthorized, accessToken, isLoading });
+export default combineReducers({ isAuthorized, isLoading });

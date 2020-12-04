@@ -1,5 +1,6 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+
 import rootReducer, { rootSaga } from './modules';
 import { authSuccess } from './modules/Auth';
 import { setToken } from './helper/request';
@@ -12,17 +13,30 @@ const saveAuthToken = (store) => (next) => (action) => {
   return next(action);
 };
 
-const createAppStore = () => {
-  const sagaMiddleware = createSagaMiddleware();
+const sagaMiddleware = createSagaMiddleware();
 
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  const enhancer = composeEnhancers(applyMiddleware(sagaMiddleware, saveAuthToken));
+const composeEnhancers =
+  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+    : compose;
+const enhancer = composeEnhancers(applyMiddleware(sagaMiddleware, saveAuthToken));
 
-  const store = createStore(rootReducer, {}, enhancer);
+const store = createStore(rootReducer, enhancer);
 
-  sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(rootSaga);
 
-  return store;
-};
+// const createAppStore = () => {
+//   const sagaMiddleware = createSagaMiddleware();
 
-export default createAppStore;
+//   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+//   const enhancer = composeEnhancers(applyMiddleware(sagaMiddleware, saveAuthToken));
+
+//   const store = createStore(rootReducer, {}, enhancer);
+
+//   sagaMiddleware.run(rootSaga);
+
+//   return store;
+// };
+
+// export default createAppStore;
+export default store;
