@@ -14,7 +14,7 @@ const App = ({ content, type }) => {
   ) : (
     <>
       {content && type && <Notification content={content} type={type} />}
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Router />
       </BrowserRouter>
     </>

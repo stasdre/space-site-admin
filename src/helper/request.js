@@ -2,7 +2,7 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 
 const request = axios.create({
-  baseURL: '/',
+  baseURL: '/api',
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
   },
