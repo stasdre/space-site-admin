@@ -3,12 +3,12 @@ import { Switch, Route, Link, useLocation } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import {
   MenuUnfoldOutlined,
-  MenuFoldOutlined,
   ApartmentOutlined,
+  FundOutlined,
   CreditCardOutlined,
   SoundOutlined,
 } from '@ant-design/icons';
-import { Reviews, Services, Works } from '../Sections';
+import { Reviews, Services, Works, Prices } from '../Sections';
 import { ServiceCreate } from '../Sections/Services';
 import { CreateWork } from '../Sections/Works';
 
@@ -25,6 +25,9 @@ const Dashboard = () => {
         <Menu theme="dark" mode="inline" defaultSelectedKeys={[mainUrl]}>
           <Menu.Item key="services" icon={<ApartmentOutlined />}>
             <Link to="/services">Услуги</Link>
+          </Menu.Item>
+          <Menu.Item key="prices" icon={<FundOutlined />}>
+            <Link to="/prices">Цены</Link>
           </Menu.Item>
           <Menu.Item key="works" icon={<CreditCardOutlined />}>
             <Link to="/works">Работы</Link>
@@ -52,6 +55,7 @@ const Dashboard = () => {
               <Route exact path="/works/create" component={CreateWork} />
               <Route exact path="/works" component={Works} />
               <Route exact path="/reviews" component={Reviews} />
+              <Route exact path="/prices" component={Prices} />
             </Switch>
           </div>
         </Content>
