@@ -1,6 +1,6 @@
 FROM node:14.15.1-alpine
 
-ENV PORT 5000
+#ENV PORT 5000
 
 # Create app directory
 RUN mkdir -p /usr/src/app
@@ -8,12 +8,12 @@ WORKDIR /usr/src/app
 
 
 # Copying source files
-COPY . /usr/src/app
+#COPY . /usr/src/app
 
-RUN npm install
+#RUN npm install
 
 # Building app
-RUN npm run build
+#RUN npm run build
 EXPOSE 5000
 
 # Running the app

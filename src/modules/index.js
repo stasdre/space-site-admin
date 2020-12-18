@@ -6,12 +6,14 @@ import notification from './Notification';
 import work, { sagas as workSaga } from './Work';
 import workTypes, { sagas as workTypesSaga } from './WorkTypes';
 import service, { sagas as servicesSaga } from './Service';
+import initial, { sagas as initialSaga } from './Initial';
 
-export default combineReducers({ auth, notification, work, workTypes, service });
+export default combineReducers({ auth, notification, work, workTypes, service, initial });
 
 export function* rootSaga() {
   yield fork(authSagas);
   yield fork(workSaga);
   yield fork(workTypesSaga);
   yield fork(servicesSaga);
+  yield fork(initialSaga);
 }

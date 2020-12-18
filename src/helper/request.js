@@ -1,5 +1,4 @@
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
 
 const request = axios.create({
   baseURL: '/api',
@@ -18,7 +17,7 @@ request.interceptors.response.use(
   (error) => {
     const originalRequest = error.config;
     if (error.response.status === 401 && originalRequest.url.includes('/refresh-token')) {
-      window.location = '/login';
+      window.location = '/admin/login';
       return Promise.reject(error);
     }
     if (error.response.status === 401 && !originalRequest._retry) {
