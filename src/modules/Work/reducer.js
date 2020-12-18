@@ -13,7 +13,7 @@ const works = handleActions(
   {
     [workGetAllRequest]: () => [],
     [workGetAllSuccess]: (_state, action) =>
-      action.payload.map((work) => ({ ...work, key: work.id })),
+      action.payload.map((work) => ({ ...work, title: work.name, key: work.id })),
     [workGetAllFailure]: () => [],
   },
   []
