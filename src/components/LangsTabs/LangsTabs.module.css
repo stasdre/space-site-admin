@@ -1,0 +1,22 @@
+.langs {
+  display: flex;
+  align-items: center;
+}
+
+.langs::after {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+}
+
+.en::after {
+  background: url('../../assets/icons/us.svg') center no-repeat;
+}
+.ru::after {
+  background: url('../../assets/icons/ru.svg') center no-repeat;
+}
+.uk::after {
+  background: url('../../assets/icons/ua.svg') center no-repeat;
+}
