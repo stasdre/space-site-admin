@@ -1,8 +1,23 @@
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
-import { seviceCreateRequest, seviceCreateSuccess, seviceCreateFailure } from './actions';
+import {
+  seviceCreateRequest,
+  seviceCreateSuccess,
+  seviceCreateFailure,
+  serviceUpdateIsSaved,
+  seviceGetAllRequest,
+  seviceGetAllSuccess,
+  seviceGetAllFailure,
+} from './actions';
 
-const services = handleActions({}, []);
+const services = handleActions(
+  {
+    [seviceGetAllRequest]: () => [],
+    [seviceGetAllSuccess]: (_state, action) => action.payload,
+    [seviceGetAllFailure]: () => [],
+  },
+  []
+);
 
 const isLoading = handleActions(
   {
@@ -13,4 +28,13 @@ const isLoading = handleActions(
   false
 );
 
-export default combineReducers({ services, isLoading });
+const isSaved = handleActions(
+  {
+    [seviceCreateSuccess]: () => true,
+    [seviceCreateFailure]: () => false,
+    [serviceUpdateIsSaved]: () => false,
+  },
+  false
+);
+
+export default combineReducers({ services, isLoading, isSaved });

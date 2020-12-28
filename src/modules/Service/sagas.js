@@ -1,14 +1,18 @@
 import { takeLatest, put, call, fork } from 'redux-saga/effects';
-import { create } from '../../api/services';
+import { create, getAll } from '../../api/services';
 import {
   seviceCreateRequest,
   seviceCreateSuccess,
   seviceCreateFailure,
+  seviceGetAllRequest,
+  seviceGetAllSuccess,
+  seviceGetAllFailure,
 } from './actions.js';
 import { showNotification } from '../Notification';
 
 function* servicesWatcher() {
   yield takeLatest(seviceCreateRequest, servicesCreateFlow);
+  yield takeLatest(seviceGetAllRequest, servicesGetAllFlow);
 }
 
 export function* servicesCreateFlow(action) {
@@ -25,6 +29,23 @@ export function* servicesCreateFlow(action) {
     const { data } = error;
 
     yield put(seviceCreateFailure());
+    yield put(
+      showNotification({
+        type: 'error',
+        content: data.message || 'Что-то пошло не так (:',
+      })
+    );
+  }
+}
+
+export function* servicesGetAllFlow(action) {
+  try {
+    const { data } = yield call(getAll, action.payload);
+    yield put(seviceGetAllSuccess(data));
+  } catch (error) {
+    const { data } = error;
+
+    yield put(seviceGetAllFailure());
     yield put(
       showNotification({
         type: 'error',

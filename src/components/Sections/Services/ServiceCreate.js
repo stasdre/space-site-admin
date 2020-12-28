@@ -1,18 +1,36 @@
-import React, { useEffect } from 'react';
-import { Form, Button, Row, Col, Space } from 'antd';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Form, Button, Row, Col, Space, Switch } from 'antd';
+import { connect, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import { workGetAllRequest, isLoading, works } from '../../../modules/Work';
+import {
+  seviceCreateRequest,
+  isSaved,
+  serviceUpdateIsSaved,
+} from '../../../modules/Service';
 import ServiceForm from './ServiceForm';
 
-const ServiceCreate = ({ isLoadingWorks, workGetAllRequest, works }) => {
+const ServiceCreate = ({
+  isLoadingWorks,
+  workGetAllRequest,
+  seviceCreateRequest,
+  works,
+  isSaved,
+  serviceUpdateIsSaved,
+}) => {
+  const history = useHistory();
+
   useEffect(() => {
+    if (isSaved === true) {
+      history.push('/services');
+      serviceUpdateIsSaved();
+      return;
+    }
     workGetAllRequest();
-  }, []);
+  }, [isSaved]);
 
   const handleSubmit = (values) => {
-    console.log('Data!!!', values);
-    //seviceCreateRequest(values);
+    seviceCreateRequest(values);
   };
 
   return (
@@ -38,6 +56,10 @@ const ServiceCreate = ({ isLoadingWorks, workGetAllRequest, works }) => {
             </Space>
           </Col>
         </Row>
+        <Form.Item name="active" initialValue={true} valuePropName="checked">
+          <Switch checkedChildren="Активна" unCheckedChildren="Не активна" />
+        </Form.Item>
+
         <ServiceForm isLoadingWorks={isLoadingWorks} works={works} />
       </Form>
     </>
@@ -48,6 +70,7 @@ export default connect(
   (state) => ({
     isLoadingWorks: isLoading(state),
     works: works(state),
+    isSaved: isSaved(state),
   }),
-  { workGetAllRequest }
+  { workGetAllRequest, seviceCreateRequest, serviceUpdateIsSaved }
 )(ServiceCreate);

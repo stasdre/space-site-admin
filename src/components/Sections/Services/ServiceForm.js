@@ -34,30 +34,30 @@ const ServiceForm = ({ works, lang }) => {
 
   return (
     <Tabs defaultActiveKey="1">
-      <TabPane tab="Meta" key="1">
+      <TabPane forceRender={true} tab="Meta" key="1">
         <Form.Item
           name={[lang, 'meta_title']}
           label="Meta title"
-          rules={[{ required: true, message: 'Title обязателен' }]}
+          // rules={[{ required: true, message: 'Title обязателен' }]}
         >
           <Input placeholder="Meta title" />
         </Form.Item>
         <Form.Item
           name={[lang, 'meta_desc']}
           label="Meta description"
-          rules={[{ required: true, message: 'Description обязателен' }]}
+          //rules={[{ required: true, message: 'Description обязателен' }]}
         >
           <TextArea rows={4} placeholder="Meta description" />
         </Form.Item>
         <Form.Item
           name={[lang, 'h1']}
           label="Заголовок h1"
-          rules={[{ required: true, message: 'h1 обязателен' }]}
+          // rules={[{ required: true, message: 'h1 обязателен' }]}
         >
           <Input placeholder="Заголовок h1" />
         </Form.Item>
       </TabPane>
-      <TabPane tab="Блок с видео" key="2">
+      <TabPane forceRender={true} tab="Блок с видео" key="2">
         <Form.Item name={[lang, 'h2']} label="Заголовок h2">
           <Input placeholder="Заголовок h2" />
         </Form.Item>
@@ -82,28 +82,29 @@ const ServiceForm = ({ works, lang }) => {
         <Form.Item name={[lang, 'video_url']} label="Ссылка на видео">
           <Input placeholder="Ссылка на видео" />
         </Form.Item>
-        <Form.Item name={[lang, 'description']} label="Описание">
+        <Form.Item
+          name={[lang, 'description']}
+          label="Описание"
+          valuePropName="defaultValue"
+        >
           <ReactQuill theme="snow" />
         </Form.Item>
       </TabPane>
-      <TabPane tab="Main" key="3">
-        <Form.Item name={[lang, 'active']} initialValue={true} valuePropName="checked">
-          <Switch checkedChildren="Активна" unCheckedChildren="Не активна" />
-        </Form.Item>
+      <TabPane forceRender={true} tab="Main" key="3">
         <Form.Item name={[lang, 'main_title']} label="Заголовок">
           <Input placeholder="Заголовок" />
         </Form.Item>
         <Form.Item
           name={[lang, 'name']}
           label="Название"
-          rules={[{ required: true, message: 'Название обязательно' }]}
+          //rules={[{ required: true, message: 'Название обязательно' }]}
         >
           <Input placeholder="Название услуги" />
         </Form.Item>
         <Form.Item
           name={[lang, 'url']}
           label="URL"
-          rules={[{ required: true, message: 'URL обязателен' }]}
+          //rules={[{ required: true, message: 'URL обязателен' }]}
         >
           <Input placeholder="URL" />
         </Form.Item>
@@ -121,18 +122,19 @@ const ServiceForm = ({ works, lang }) => {
           <Transfer oneWay titles={['Все отзывы', 'Привязанные']} />
         </Form.Item>
       </TabPane>
-      <TabPane tab="Описание" key="4">
+      <TabPane forceRender={true} tab="Описание" key="4">
         <Form.Item
           name={[lang, 'desc_hash']}
           label="Hash"
-          rules={[{ required: true, message: 'Hash обязателен' }]}
+          //rules={[{ required: true, message: 'Hash обязателен' }]}
         >
           <Input placeholder="Hash" prefix="#" />
         </Form.Item>
         <Form.Item
           name={[lang, 'desc']}
           label="Текст описания"
-          rules={[{ required: true, message: 'Текст обязателен' }]}
+          valuePropName="defaultValue"
+          //rules={[{ required: true, message: 'Текст обязателен' }]}
         >
           <ReactQuill theme="snow" />
         </Form.Item>
@@ -165,11 +167,11 @@ const ServiceForm = ({ works, lang }) => {
           )}
         </Form.List>
       </TabPane>
-      <TabPane tab="Цены" key="5">
+      <TabPane forceRender={true} tab="Цены" key="5">
         <Form.Item
           name={[lang, 'price_hash']}
           label="Hash"
-          rules={[{ required: true, message: 'Hash обязателен' }]}
+          // rules={[{ required: true, message: 'Hash обязателен' }]}
         >
           <Input placeholder="Hash" prefix="#" />
         </Form.Item>
@@ -187,7 +189,7 @@ const ServiceForm = ({ works, lang }) => {
                       {...field}
                       name={[field.name, 'title']}
                       fieldKey={[field.fieldKey, 'title']}
-                      rules={[{ required: true, message: 'Название обязательно' }]}
+                      // rules={[{ required: true, message: 'Название обязательно' }]}
                       wrapperCol={{ span: 24 }}
                     >
                       <Input placeholder="Название" />
@@ -204,7 +206,7 @@ const ServiceForm = ({ works, lang }) => {
                       {...field}
                       name={[field.name, 'price']}
                       fieldKey={[field.fieldKey, 'price']}
-                      rules={[{ required: true, message: 'Неверная цена' }]}
+                      // rules={[{ required: true, message: 'Неверная цена' }]}
                       wrapperCol={{ span: 24 }}
                     >
                       <InputNumber placeholder="Цена" prefix="$" />
@@ -236,18 +238,19 @@ const ServiceForm = ({ works, lang }) => {
           }}
         </Form.List>
       </TabPane>
-      <TabPane tab="Подробнее" key="6">
+      <TabPane forceRender={true} tab="Подробнее" key="6">
         <Form.Item
           name={[lang, 'more_hash']}
           label="Hash"
-          rules={[{ required: true, message: 'Hash обязателен' }]}
+          // rules={[{ required: true, message: 'Hash обязателен' }]}
         >
           <Input placeholder="Hash" prefix="#" />
         </Form.Item>
         <Form.Item
           name={[lang, 'more']}
           label="Текст"
-          rules={[{ required: true, message: 'Текст обязателен' }]}
+          valuePropName="defaultValue"
+          // rules={[{ required: true, message: 'Текст обязателен' }]}
         >
           <ReactQuill theme="snow" />
         </Form.Item>

@@ -10,12 +10,13 @@ const LangsTabs = (Component) => {
     <Tabs defaultActiveKey="1" type="card">
       {langs.map((lang) => (
         <TabPane
+          forceRender={true}
           tab={
             <span className={`${styles.langs} ${styles[lang.code]}`}>{lang.name}</span>
           }
           key={lang.id}
         >
-          <Component {...props} lang={lang.code} />
+          <Component {...props} lang={lang.id} />
         </TabPane>
       ))}
     </Tabs>
