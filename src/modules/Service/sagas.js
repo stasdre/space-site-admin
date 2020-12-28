@@ -1,5 +1,5 @@
 import { takeLatest, put, call, fork } from 'redux-saga/effects';
-import { create, getAll } from '../../api/services';
+import { create, getAll, deleteService } from '../../api/services';
 import {
   seviceCreateRequest,
   seviceCreateSuccess,
@@ -7,12 +7,16 @@ import {
   seviceGetAllRequest,
   seviceGetAllSuccess,
   seviceGetAllFailure,
+  seviceDeleteRequest,
+  seviceDeleteSuccess,
+  seviceDeleteFailure,
 } from './actions.js';
 import { showNotification } from '../Notification';
 
 function* servicesWatcher() {
   yield takeLatest(seviceCreateRequest, servicesCreateFlow);
   yield takeLatest(seviceGetAllRequest, servicesGetAllFlow);
+  yield takeLatest(seviceDeleteRequest, servicesDeleteFlow);
 }
 
 export function* servicesCreateFlow(action) {
@@ -38,14 +42,37 @@ export function* servicesCreateFlow(action) {
   }
 }
 
-export function* servicesGetAllFlow(action) {
+export function* servicesGetAllFlow() {
   try {
-    const { data } = yield call(getAll, action.payload);
-    yield put(seviceGetAllSuccess(data));
+    const { services } = yield call(getAll);
+    yield put(seviceGetAllSuccess(services));
   } catch (error) {
     const { data } = error;
 
     yield put(seviceGetAllFailure());
+    yield put(
+      showNotification({
+        type: 'error',
+        content: data.message || 'Что-то пошло не так (:',
+      })
+    );
+  }
+}
+
+export function* servicesDeleteFlow(action) {
+  try {
+    const { service } = yield call(deleteService, action.payload);
+    yield put(seviceDeleteSuccess(service));
+    yield put(
+      showNotification({
+        type: 'success',
+        content: 'Услуга удалена',
+      })
+    );
+  } catch (error) {
+    const { data } = error;
+
+    yield put(seviceDeleteFailure());
     yield put(
       showNotification({
         type: 'error',

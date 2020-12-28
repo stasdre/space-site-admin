@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Button, Row, Col, Space, Switch } from 'antd';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { workGetAllRequest, isLoading, works } from '../../../modules/Work';
 import {

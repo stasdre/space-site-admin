@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Button, Space } from 'antd';
+
+import { seviceGetAllRequest } from '../../../modules/Service';
 import ServiceLangs from './ServiceLangs';
 
-const Services = () => {
+const Services = ({ seviceGetAllRequest }) => {
+  useEffect(() => {
+    seviceGetAllRequest();
+  }, []);
+
   return (
     <>
       <Space align="center" style={{ marginBottom: 16 }}>
@@ -18,4 +25,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default connect(null, { seviceGetAllRequest })(Services);

@@ -9,9 +9,9 @@ export const create = (data) => {
     .catch((error) => Promise.reject(error.response));
 };
 
-export const getAll = (lang) => {
+export const getByLang = (lang) => {
   return request
-    .get(`${apiUrl}/all/${lang}`)
+    .get(`${apiUrl}/lang/${lang}`)
     .then((response) => response.data)
     .catch((error) => Promise.reject(error.response));
 };
@@ -23,9 +23,9 @@ export const getById = (id) => {
     .catch((error) => Promise.reject(error.response));
 };
 
-export const updateRow = (data) => {
+export const getAll = () => {
   return request
-    .post(`${apiUrl}/update-row/`, { id: data.id, price: data.price })
+    .get(`${apiUrl}/`)
     .then((response) => response.data)
     .catch((error) => Promise.reject(error.response));
 };

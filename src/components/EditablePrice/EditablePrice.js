@@ -12,7 +12,7 @@ const EditablePrice = ({ price }) => {
 
   const save = async (e) => {
     try {
-      console.log('SAVE!!!');
+      console.log('SAVE!!!', price);
       toggleEdit();
     } catch (errInfo) {
       console.log('Save failed:', errInfo);

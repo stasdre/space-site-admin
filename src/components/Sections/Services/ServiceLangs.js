@@ -1,58 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Button, Table, Space, Drawer, Form, Input, Popconfirm } from 'antd';
+
+import { services, isLoading, seviceDeleteRequest } from '../../../modules/Service';
 import { LangsTabs } from '../../LangsTabs';
 import { EditablePrice } from '../../EditablePrice';
-import { getAll, deleteService } from '../../../api/services';
 
 const renderPrice = (price) => {
   if (!price) return;
   return <EditablePrice price={price} />;
 };
 
-const ServiceLangs = ({ lang }) => {
-  const [data, setData] = useState();
+const ServiceLangs = ({ lang, services, isLoading, seviceDeleteRequest }) => {
   const [selectedData, setSelectedData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    setIsLoading(true);
-    getAll(lang).then(({ services }) => {
-      setData(services);
-      setIsLoading(false);
-    });
-  }, []);
 
   const handleChange = (selectedRowKeys, selectedRows) => {
     setSelectedData(selectedRows);
   };
 
   const handleSubmit = (values) => {
-    setData(
-      data.map((item) => {
-        item.price_1 = values.price_1;
-        item.price_2 = values.price_2;
-        item.price_3 = values.price_3;
-
-        return item;
-      })
-    );
-
     setIsOpen(false);
   };
 
   const handleDelete = (id) => {
-    console.log('Delete!!!', id);
-    setIsLoading(true);
-    deleteService(id)
-      .then(() => {
-        setData(data.filter((item) => item.id !== id && item));
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setIsLoading(false);
-      });
+    seviceDeleteRequest(id);
   };
 
   const columns = [
@@ -134,7 +107,7 @@ const ServiceLangs = ({ lang }) => {
         rowKey={(record) => record.id}
         rowSelection={{ fixed: true, onChange: handleChange }}
         bordered
-        dataSource={data}
+        dataSource={services[lang] || []}
         loading={isLoading}
       />
       <Drawer
@@ -171,4 +144,10 @@ const ServiceLangs = ({ lang }) => {
   );
 };
 
-export default LangsTabs(ServiceLangs);
+export default connect(
+  (state) => ({
+    services: services(state),
+    isLoading: isLoading(state),
+  }),
+  { seviceDeleteRequest }
+)(LangsTabs(ServiceLangs));
