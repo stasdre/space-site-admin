@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { InputNumber, Form } from 'antd';
+import { connect } from 'react-redux';
+import { InputNumber, Form, Spin } from 'antd';
 
+import { priceUpdateRequest } from '../../modules/Price';
 import styles from './EditablePrice.module.css';
 
-const EditablePrice = ({ price }) => {
+const EditablePrice = ({ price, priceUpdateRequest }) => {
   const [editing, setEditing] = useState(false);
 
   const toggleEdit = () => {
@@ -11,12 +13,9 @@ const EditablePrice = ({ price }) => {
   };
 
   const save = async (e) => {
-    try {
-      console.log('SAVE!!!', price);
-      toggleEdit();
-    } catch (errInfo) {
-      console.log('Save failed:', errInfo);
-    }
+    const newPrice = e.target.value;
+    toggleEdit();
+    priceUpdateRequest({ id: price.id, data: { price: newPrice } });
   };
 
   if (editing) {
@@ -54,4 +53,6 @@ const EditablePrice = ({ price }) => {
   }
 };
 
-export default EditablePrice;
+export default connect(null, {
+  priceUpdateRequest,
+})(EditablePrice);

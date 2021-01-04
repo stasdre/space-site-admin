@@ -2,16 +2,16 @@ import request from '../helper/request';
 
 const apiUrl = '/prices';
 
-export const create = (data) => {
+export const update = (id, data) => {
   return request
-    .post(`${apiUrl}/create`, data)
+    .put(`${apiUrl}/${id}`, data)
     .then((response) => response.data)
     .catch((error) => Promise.reject(error.response));
 };
 
-export const getAll = () => {
+export const massUpdate = (data) => {
   return request
-    .get(`${apiUrl}/all`)
+    .put(`${apiUrl}/mass-update`, data)
     .then((response) => response.data)
     .catch((error) => Promise.reject(error.response));
 };

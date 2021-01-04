@@ -1,27 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Button, Table, Space, Drawer, Form, Input, Popconfirm } from 'antd';
+import { Button, Table, Space, Popconfirm, Drawer } from 'antd';
 
 import { services, isLoading, seviceDeleteRequest } from '../../../modules/Service';
+import { isLoading as priceIsLoading } from '../../../modules/Price';
 import { LangsTabs } from '../../LangsTabs';
 import { EditablePrice } from '../../EditablePrice';
+import { PriceDrawer } from '../../PriceDrawer';
 
 const renderPrice = (price) => {
   if (!price) return;
   return <EditablePrice price={price} />;
 };
 
-const ServiceLangs = ({ lang, services, isLoading, seviceDeleteRequest }) => {
+const ServiceLangs = ({
+  lang,
+  services,
+  isLoading,
+  priceIsLoading,
+  seviceDeleteRequest,
+}) => {
   const [selectedData, setSelectedData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleChange = (selectedRowKeys, selectedRows) => {
     setSelectedData(selectedRows);
-  };
-
-  const handleSubmit = (values) => {
-    setIsOpen(false);
   };
 
   const handleDelete = (id) => {
@@ -87,7 +91,7 @@ const ServiceLangs = ({ lang, services, isLoading, seviceDeleteRequest }) => {
             title="Уверены что хотите удалить?"
             onConfirm={() => handleDelete(service.id)}
           >
-            <a>Удалить</a>
+            <Button type="link">Удалить</Button>
           </Popconfirm>
         </Space>
       ),
@@ -103,12 +107,12 @@ const ServiceLangs = ({ lang, services, isLoading, seviceDeleteRequest }) => {
       </Space>
       <Table
         columns={columns}
-        scroll={{ x: 1350 }}
+        scroll={{ x: 1420 }}
         rowKey={(record) => record.id}
         rowSelection={{ fixed: true, onChange: handleChange }}
         bordered
         dataSource={services[lang] || []}
-        loading={isLoading}
+        loading={isLoading || priceIsLoading}
       />
       <Drawer
         title="Обновление цен"
@@ -116,29 +120,11 @@ const ServiceLangs = ({ lang, services, isLoading, seviceDeleteRequest }) => {
         visible={isOpen}
         onClose={() => setIsOpen(false)}
       >
-        <Form onFinish={handleSubmit}>
-          <Form.Item name="price_1" label="Цена 1">
-            <Input placeholder="Цена 1" />
-          </Form.Item>
-          <Form.Item name="price_2" label="Цена 2">
-            <Input placeholder="Цена 2" />
-          </Form.Item>
-          <Form.Item name="price_3" label="Цена 3">
-            <Input placeholder="Цена 3" />
-          </Form.Item>
-          <div
-            style={{
-              textAlign: 'right',
-            }}
-          >
-            <Button onClick={() => setIsOpen(false)} style={{ marginRight: 8 }}>
-              Cancel
-            </Button>
-            <Button htmlType="submit" type="primary">
-              Submit
-            </Button>
-          </div>
-        </Form>
+        <PriceDrawer
+          lang={lang}
+          selectedData={selectedData}
+          setIsOpen={(p) => setIsOpen(p)}
+        />
       </Drawer>
     </>
   );
@@ -148,6 +134,7 @@ export default connect(
   (state) => ({
     services: services(state),
     isLoading: isLoading(state),
+    priceIsLoading: priceIsLoading(state),
   }),
   { seviceDeleteRequest }
 )(LangsTabs(ServiceLangs));

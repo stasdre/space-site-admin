@@ -8,6 +8,7 @@ import workTypes, { sagas as workTypesSaga } from './WorkTypes';
 import service, { sagas as servicesSaga } from './Service';
 import initial, { sagas as initialSaga } from './Initial';
 import lang, { sagas as langSaga } from './Lang';
+import price, { sagas as priceSaga } from './Price';
 
 export default combineReducers({
   auth,
@@ -17,6 +18,7 @@ export default combineReducers({
   service,
   initial,
   lang,
+  price,
 });
 
 export function* rootSaga() {
@@ -26,4 +28,5 @@ export function* rootSaga() {
   yield fork(servicesSaga);
   yield fork(initialSaga);
   yield fork(langSaga);
+  yield fork(priceSaga);
 }

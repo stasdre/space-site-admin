@@ -13,3 +13,7 @@ export const seviceGetAllFailure = createAction('SERVICE/GET_ALL_FAILURE');
 export const seviceDeleteRequest = createAction('SERVICE/DELETE_REQUEST');
 export const seviceDeleteSuccess = createAction('SERVICE/DELETE_SUCCESS');
 export const seviceDeleteFailure = createAction('SERVICE/DELETE_FAILURE');
+
+export const serviceUpdateRowPrice = createAction('SERVICE/UPDATE_ROW_PRICE');
+
+export const serviceMassUpdatePrices = createAction('SERVICE/MASS_UPDATE_PRICES');
