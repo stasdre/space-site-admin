@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Switch, Route, Link, useLocation } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import {
@@ -7,9 +7,16 @@ import {
   CreditCardOutlined,
   SoundOutlined,
 } from '@ant-design/icons';
-import { Reviews, Services, Works } from '../Sections';
-import { ServiceCreate, ServiceEdit } from '../Sections/Services';
-import { WorkCreate, WorkEdit } from '../Sections/Works';
+
+const Reviews = lazy(() => import('../Sections/Reviews/Reviews'));
+
+const Services = lazy(() => import('../Sections/Services/Services'));
+const ServiceCreate = lazy(() => import('../Sections/Services/ServiceCreate'));
+const ServiceEdit = lazy(() => import('../Sections/Services/ServiceEdit'));
+
+const Works = lazy(() => import('../Sections/Works/Works'));
+const WorkCreate = lazy(() => import('../Sections/Works/WorkCreate'));
+const WorkEdit = lazy(() => import('../Sections/Works/WorkEdit'));
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -45,17 +52,19 @@ const Dashboard = () => {
             className="site-layout-background"
             style={{ padding: 24, minHeight: '100%' }}
           >
-            <Switch>
-              <Route exact path="/services" component={Services} />
-              <Route exact path="/services/create" component={ServiceCreate} />
-              <Route exact path="/services/edit/:id" component={ServiceEdit} />
+            <Suspense fallback={<div>Загрузка...</div>}>
+              <Switch>
+                <Route exact path="/services" component={Services} />
+                <Route exact path="/services/create" component={ServiceCreate} />
+                <Route exact path="/services/edit/:id" component={ServiceEdit} />
 
-              <Route exact path="/works" component={Works} />
-              <Route exact path="/works/create" component={WorkCreate} />
-              <Route exact path="/works/edit/:id" component={WorkEdit} />
+                <Route exact path="/works" component={Works} />
+                <Route exact path="/works/create" component={WorkCreate} />
+                <Route exact path="/works/edit/:id" component={WorkEdit} />
 
-              <Route exact path="/reviews" component={Reviews} />
-            </Switch>
+                <Route exact path="/reviews" component={Reviews} />
+              </Switch>
+            </Suspense>
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>©2020 Space-site</Footer>

@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { PrivateRoute } from '../PrivateRoute';
-import { Dashboard } from '../Dashboard';
-import { Login } from '../Login';
+
+const Login = lazy(() => import('../Login/Login'));
+const Dashboard = lazy(() => import('../Dashboard/Dashboard'));
 
 const Router = () => {
   return (
-    <Switch>
-      <Route exact path="/login" component={Login} />
-      <PrivateRoute path="/" component={Dashboard} />
-    </Switch>
+    <Suspense fallback={<div>Загрузка...</div>}>
+      <Switch>
+        <Route exact path="/login" component={Login} />
+        <PrivateRoute path="/" component={Dashboard} />
+      </Switch>
+    </Suspense>
   );
 };
 
