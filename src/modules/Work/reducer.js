@@ -7,16 +7,29 @@ import {
   workGetAllRequest,
   workGetAllSuccess,
   workGetAllFailure,
+  workUpdateIsSaved,
+  workDeleteRequest,
+  workDeleteSuccess,
+  workDeleteFailure,
 } from './actions';
 
 const works = handleActions(
   {
-    [workGetAllRequest]: () => [],
-    [workGetAllSuccess]: (_state, action) =>
-      action.payload.map((work) => ({ ...work, title: work.name, key: work.id })),
-    [workGetAllFailure]: () => [],
+    [workGetAllRequest]: () => {},
+    [workGetAllSuccess]: (_state, action) => action.payload,
+    [workGetAllFailure]: () => {},
+    [workDeleteSuccess]: (_state, action) => {
+      const newState = {};
+      for (const item in _state) {
+        newState[item] = _state[item].filter(
+          (work) => work.id !== action.payload && work
+        );
+      }
+
+      return newState;
+    },
   },
-  []
+  {}
 );
 
 const isLoading = handleActions(
@@ -27,8 +40,21 @@ const isLoading = handleActions(
     [workGetAllSuccess]: () => false,
     [workCreateFailure]: () => false,
     [workGetAllFailure]: () => false,
+
+    [workDeleteRequest]: () => true,
+    [workDeleteSuccess]: () => false,
+    [workDeleteFailure]: () => false,
   },
   false
 );
 
-export default combineReducers({ works, isLoading });
+const isSaved = handleActions(
+  {
+    [workCreateSuccess]: () => true,
+    [workCreateFailure]: () => false,
+    [workUpdateIsSaved]: () => false,
+  },
+  false
+);
+
+export default combineReducers({ works, isLoading, isSaved });

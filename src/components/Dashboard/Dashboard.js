@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import { Reviews, Services, Works } from '../Sections';
 import { ServiceCreate, ServiceEdit } from '../Sections/Services';
-import { CreateWork } from '../Sections/Works';
+import { WorkCreate, WorkEdit } from '../Sections/Works';
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -49,8 +49,11 @@ const Dashboard = () => {
               <Route exact path="/services" component={Services} />
               <Route exact path="/services/create" component={ServiceCreate} />
               <Route exact path="/services/edit/:id" component={ServiceEdit} />
-              <Route exact path="/works/create" component={CreateWork} />
+
               <Route exact path="/works" component={Works} />
+              <Route exact path="/works/create" component={WorkCreate} />
+              <Route exact path="/works/edit/:id" component={WorkEdit} />
+
               <Route exact path="/reviews" component={Reviews} />
             </Switch>
           </div>
