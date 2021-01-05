@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Form, Button, Row, Col, Space, Switch } from 'antd';
 import { connect } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { workGetAllRequest, isLoading, works } from '../../../modules/Work';
+
+import { getAll } from '../../../api/work';
 import {
   seviceCreateRequest,
   isSaved,
@@ -10,14 +11,9 @@ import {
 } from '../../../modules/Service';
 import ServiceForm from './ServiceForm';
 
-const ServiceCreate = ({
-  isLoadingWorks,
-  workGetAllRequest,
-  seviceCreateRequest,
-  works,
-  isSaved,
-  serviceUpdateIsSaved,
-}) => {
+const ServiceCreate = ({ seviceCreateRequest, isSaved, serviceUpdateIsSaved }) => {
+  const [works, setWorks] = useState({});
+  const [isLoadingWorks, setIsLoadingWorks] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -26,7 +22,15 @@ const ServiceCreate = ({
       serviceUpdateIsSaved();
       return;
     }
-    workGetAllRequest();
+    setIsLoadingWorks(true);
+    getAll()
+      .then(({ works }) => {
+        setWorks(works);
+        setIsLoadingWorks(false);
+      })
+      .catch(() => {
+        setIsLoadingWorks(false);
+      });
   }, [isSaved]);
 
   const handleSubmit = (values) => {
@@ -68,9 +72,7 @@ const ServiceCreate = ({
 
 export default connect(
   (state) => ({
-    isLoadingWorks: isLoading(state),
-    works: works(state),
     isSaved: isSaved(state),
   }),
-  { workGetAllRequest, seviceCreateRequest, serviceUpdateIsSaved }
+  { seviceCreateRequest, serviceUpdateIsSaved }
 )(ServiceCreate);

@@ -5,8 +5,12 @@ import { connect } from 'react-redux';
 import { showNotification } from '../../../modules/Notification';
 import ServiceForm from './ServiceForm';
 import { getById, update } from '../../../api/services';
+import { getAll } from '../../../api/work';
 
 const ServiceEdit = ({ showNotification }) => {
+  const [works, setWorks] = useState({});
+  const [isLoadingWorks, setIsLoadingWorks] = useState(false);
+
   const [isSaved, setIsSaved] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [service, setService] = useState({});
@@ -14,21 +18,26 @@ const ServiceEdit = ({ showNotification }) => {
   const { id } = useParams();
 
   useEffect(() => {
-    if (isSaved === true) {
-      history.push('/services');
-      return;
-    }
-    getById(id).then(({ service }) => {
-      setService({ ...service });
-      setIsLoading(false);
-    });
-  }, [isSaved]);
+    setIsLoadingWorks(true);
+    getAll()
+      .then(({ works }) => {
+        setWorks(works);
+        setIsLoadingWorks(false);
+        getById(id).then(({ service }) => {
+          setService({ ...service });
+          setIsLoading(false);
+        });
+      })
+      .catch(() => {
+        setIsLoadingWorks(false);
+      });
+  }, []);
 
   const handleSubmit = (values) => {
-    setIsLoading(true);
+    setIsSaved(true);
     update(id, values)
       .then(() => {
-        setIsLoading(false);
+        setIsSaved(false);
         showNotification({
           type: 'success',
           content: 'Услуга обновлена :)',
@@ -36,7 +45,7 @@ const ServiceEdit = ({ showNotification }) => {
         history.push('/services');
       })
       .catch((data) => {
-        setIsLoading(false);
+        setIsSaved(false);
         showNotification({
           type: 'error',
           content: data.message || 'Что-то пошло не так (:',
@@ -64,7 +73,7 @@ const ServiceEdit = ({ showNotification }) => {
               <Link to="/services">
                 <Button>Отменить</Button>
               </Link>
-              <Button type="primary" htmlType="submit">
+              <Button loading={isSaved} type="primary" htmlType="submit">
                 Сохранить
               </Button>
             </Space>
@@ -74,7 +83,7 @@ const ServiceEdit = ({ showNotification }) => {
           <Switch checkedChildren="Активна" unCheckedChildren="Не активна" />
         </Form.Item>
 
-        <ServiceForm />
+        <ServiceForm isLoadingWorks={isLoadingWorks} works={works} />
       </Form>
     </>
   );

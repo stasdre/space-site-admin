@@ -24,6 +24,7 @@ const ServiceForm = ({ works, lang }) => {
   const [imgPrev, setImgPrev] = useState('');
 
   const handleChange = (nextTargetKeys) => {
+    console.log(nextTargetKeys);
     setTargetKeys(nextTargetKeys);
   };
 
@@ -108,13 +109,14 @@ const ServiceForm = ({ works, lang }) => {
         >
           <Input placeholder="URL" />
         </Form.Item>
-        <Form.Item label="Работы" name={[lang, 'works']}>
+        <Form.Item valuePropName="targetKeys" label="Работы" name={[lang, 'works']}>
           <Transfer
-            dataSource={works}
-            render={(item) => item.title}
+            rowKey={(record) => record.id}
+            dataSource={works[lang] || []}
+            render={(item) => item.name}
             oneWay
             targetKeys={targetKeys}
-            //onChange={handleChange}
+            onChange={handleChange}
             titles={['Все работы', 'Привязанные']}
           />
         </Form.Item>
