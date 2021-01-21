@@ -43,3 +43,17 @@ export const deleteService = (id) => {
     .then((response) => response.data)
     .catch((error) => Promise.reject(error.response));
 };
+
+export const upload = (file, oldFile = null) => {
+  let fd = new FormData();
+  fd.append('file', file);
+  fd.append('oldFile', oldFile);
+  return request
+    .post(`${apiUrl}/upload/`, fd, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => Promise.reject(error.response));
+};

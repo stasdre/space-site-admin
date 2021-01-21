@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Form,
   Tabs,
@@ -15,22 +15,33 @@ import ReactQuill from 'react-quill';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { LangsTabs } from '../../LangsTabs';
 import 'react-quill/dist/quill.snow.css';
+import { ServiceFormEditContext } from './ServiceEdit';
+import { ServiceFormCreateContext } from './ServiceCreate';
+
+import { upload } from '../../../api/services';
 
 const { TabPane } = Tabs;
 const { TextArea } = Input;
 
 const ServiceForm = ({ works, lang }) => {
   const [targetKeys, setTargetKeys] = useState([]);
-  const [imgPrev, setImgPrev] = useState('');
+  const editForm = useContext(ServiceFormEditContext);
+  const createForm = useContext(ServiceFormCreateContext);
 
   const handleChange = (nextTargetKeys) => {
-    console.log(nextTargetKeys);
     setTargetKeys(nextTargetKeys);
   };
 
-  const handleVideoPreviewChange = (file) => {
-    console.log('File!', file);
-    return;
+  const handleFileUpload = (file) => {
+    upload(file, editForm && editForm.getFieldValue([lang, 'video_prev'])).then(
+      (file) => {
+        if (file.url) {
+          if (editForm) editForm.setFieldsValue({ [lang]: { video_prev: file.url } });
+          if (createForm) createForm.setFieldsValue({ [lang]: { video_prev: file.url } });
+        }
+      }
+    );
+    return false;
   };
 
   return (
@@ -65,20 +76,39 @@ const ServiceForm = ({ works, lang }) => {
         <Form.Item name={[lang, 'video_name']} label="Заголовок видео">
           <Input placeholder="Заголовок видео" />
         </Form.Item>
-        <Form.Item name={[lang, 'video_prev']} label="Превью" valuePropName="">
-          <Upload
-            listType="picture-card"
-            accept="image/jpeg,image/jpg,image/png"
-            beforeUpload={false}
-            showUploadList={false}
-            // onChange={handleVideoPreviewChange}
-          >
-            {imgPrev ? (
-              <img src={imgPrev} alt="avatar" style={{ width: '100%' }} />
-            ) : (
-              <PlusOutlined />
-            )}
-          </Upload>
+        <Form.Item label="Превью" shouldUpdate>
+          {() => {
+            return (
+              <Form.Item name={[lang, 'video_prev']} valuePropName="fileList">
+                <Upload
+                  action={handleFileUpload}
+                  listType="picture-card"
+                  showUploadList={false}
+                  beforeUpload={false}
+                  accept="image/jpeg,image/jpg,image/png"
+                >
+                  {editForm && editForm.getFieldValue([lang, 'video_prev']) ? (
+                    <img
+                      src={editForm.getFieldValue([lang, 'video_prev'])}
+                      alt="avatar"
+                      style={{ width: '100%' }}
+                    />
+                  ) : createForm && createForm.getFieldValue([lang, 'video_prev']) ? (
+                    <img
+                      src={createForm.getFieldValue([lang, 'video_prev'])}
+                      alt="avatar"
+                      style={{ width: '100%' }}
+                    />
+                  ) : (
+                    <div>
+                      <PlusOutlined />
+                      <div style={{ marginTop: 8 }}>Upload</div>
+                    </div>
+                  )}
+                </Upload>
+              </Form.Item>
+            );
+          }}
         </Form.Item>
         <Form.Item name={[lang, 'video_url']} label="Ссылка на видео">
           <Input placeholder="Ссылка на видео" />

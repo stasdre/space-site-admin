@@ -10,7 +10,10 @@ import { getAll as getAllCategories } from '../../../api/categories';
 
 const { Option } = Select;
 
+const ServiceFormEditContext = React.createContext();
+
 const ServiceEdit = ({ showNotification }) => {
+  const [form] = Form.useForm();
   const [works, setWorks] = useState({});
   const [isLoadingWorks, setIsLoadingWorks] = useState(false);
 
@@ -48,6 +51,7 @@ const ServiceEdit = ({ showNotification }) => {
   }, []);
 
   const handleSubmit = (values) => {
+    console.log('Saved data!!!', values);
     setIsSaved(true);
     update(id, values)
       .then(() => {
@@ -72,49 +76,54 @@ const ServiceEdit = ({ showNotification }) => {
   return (
     <>
       <Form
+        form={form}
         labelCol={{ span: 2 }}
         wrapperCol={{ span: 14 }}
         layout="horizontal"
         onFinish={handleSubmit}
         initialValues={service}
       >
-        <Row justify="end">
-          <Col span={8}>
-            <Space
-              direction="horizontal"
-              style={{ width: '100%', justifyContent: 'flex-end' }}
-            >
-              <Link to="/services">
-                <Button>Отменить</Button>
-              </Link>
-              <Button loading={isSaved} type="primary" htmlType="submit">
-                Сохранить
-              </Button>
-            </Space>
-          </Col>
-        </Row>
-        <Form.Item name="active" valuePropName="checked">
-          <Switch checkedChildren="Активна" unCheckedChildren="Не активна" />
-        </Form.Item>
-        <Form.Item
-          valuePropName="value"
-          wrapperCol={{ xs: { span: 24 }, sm: { span: 8 } }}
-          name="ServiceCategoryId"
-          rules={[{ required: true, message: 'Выберите категорию' }]}
-        >
-          <Select loading={isCategoriesLoading} placeholder="Выбирите тип работы">
-            {categories.map((type) => (
-              <Option key={type.id} value={type.id}>
-                {type.name}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
+        <ServiceFormEditContext.Provider value={form}>
+          <Row justify="end">
+            <Col span={8}>
+              <Space
+                direction="horizontal"
+                style={{ width: '100%', justifyContent: 'flex-end' }}
+              >
+                <Link to="/services">
+                  <Button>Отменить</Button>
+                </Link>
+                <Button loading={isSaved} type="primary" htmlType="submit">
+                  Сохранить
+                </Button>
+              </Space>
+            </Col>
+          </Row>
+          <Form.Item name="active" valuePropName="checked">
+            <Switch checkedChildren="Активна" unCheckedChildren="Не активна" />
+          </Form.Item>
+          <Form.Item
+            valuePropName="value"
+            wrapperCol={{ xs: { span: 24 }, sm: { span: 8 } }}
+            name="ServiceCategoryId"
+            rules={[{ required: true, message: 'Выберите категорию' }]}
+          >
+            <Select loading={isCategoriesLoading} placeholder="Выбирите тип работы">
+              {categories.map((type) => (
+                <Option key={type.id} value={type.id}>
+                  {type.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
 
-        <ServiceForm isLoadingWorks={isLoadingWorks} works={works} />
+          <ServiceForm isLoadingWorks={isLoadingWorks} works={works} />
+        </ServiceFormEditContext.Provider>
       </Form>
     </>
   );
 };
+
+export { ServiceFormEditContext };
 
 export default connect(null, { showNotification })(ServiceEdit);

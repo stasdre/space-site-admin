@@ -14,7 +14,10 @@ import ServiceForm from './ServiceForm';
 
 const { Option } = Select;
 
+const ServiceFormCreateContext = React.createContext();
+
 const ServiceCreate = ({ seviceCreateRequest, isSaved, serviceUpdateIsSaved }) => {
+  const [form] = Form.useForm();
   const [works, setWorks] = useState({});
   const [isLoadingWorks, setIsLoadingWorks] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -54,48 +57,53 @@ const ServiceCreate = ({ seviceCreateRequest, isSaved, serviceUpdateIsSaved }) =
   return (
     <>
       <Form
+        form={form}
         labelCol={{ span: 2 }}
         wrapperCol={{ span: 14 }}
         layout="horizontal"
         onFinish={handleSubmit}
       >
-        <Row justify="end">
-          <Col span={8}>
-            <Space
-              direction="horizontal"
-              style={{ width: '100%', justifyContent: 'flex-end' }}
-            >
-              <Link to="/services">
-                <Button>Отменить</Button>
-              </Link>
-              <Button type="primary" htmlType="submit">
-                Сохранить
-              </Button>
-            </Space>
-          </Col>
-        </Row>
-        <Form.Item name="active" initialValue={true} valuePropName="checked">
-          <Switch checkedChildren="Активна" unCheckedChildren="Не активна" />
-        </Form.Item>
-        <Form.Item
-          wrapperCol={{ xs: { span: 24 }, sm: { span: 8 } }}
-          name="ServiceCategoryId"
-          rules={[{ required: true, message: 'Выберите категорию' }]}
-        >
-          <Select loading={isCategoriesLoading} placeholder="Выбирите тип работы">
-            {categories.map((type) => (
-              <Option key={type.id} value={type.id}>
-                {type.name}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
+        <ServiceFormCreateContext.Provider value={form}>
+          <Row justify="end">
+            <Col span={8}>
+              <Space
+                direction="horizontal"
+                style={{ width: '100%', justifyContent: 'flex-end' }}
+              >
+                <Link to="/services">
+                  <Button>Отменить</Button>
+                </Link>
+                <Button type="primary" htmlType="submit">
+                  Сохранить
+                </Button>
+              </Space>
+            </Col>
+          </Row>
+          <Form.Item name="active" initialValue={true} valuePropName="checked">
+            <Switch checkedChildren="Активна" unCheckedChildren="Не активна" />
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{ xs: { span: 24 }, sm: { span: 8 } }}
+            name="ServiceCategoryId"
+            rules={[{ required: true, message: 'Выберите категорию' }]}
+          >
+            <Select loading={isCategoriesLoading} placeholder="Выбирите тип работы">
+              {categories.map((type) => (
+                <Option key={type.id} value={type.id}>
+                  {type.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
 
-        <ServiceForm isLoadingWorks={isLoadingWorks} works={works} />
+          <ServiceForm isLoadingWorks={isLoadingWorks} works={works} />
+        </ServiceFormCreateContext.Provider>
       </Form>
     </>
   );
 };
+
+export { ServiceFormCreateContext };
 
 export default connect(
   (state) => ({

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { InputNumber, Form, Spin } from 'antd';
+import { InputNumber, Form } from 'antd';
 
 import { priceUpdateRequest } from '../../modules/Price';
 import styles from './EditablePrice.module.css';
