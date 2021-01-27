@@ -51,7 +51,6 @@ const ServiceEdit = ({ showNotification }) => {
   }, []);
 
   const handleSubmit = (values) => {
-    console.log('Saved data!!!', values);
     setIsSaved(true);
     update(id, values)
       .then(() => {

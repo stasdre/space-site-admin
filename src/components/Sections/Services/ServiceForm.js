@@ -68,11 +68,11 @@ const ServiceForm = ({ works, lang }) => {
         >
           <Input placeholder="Заголовок h1" />
         </Form.Item>
-      </TabPane>
-      <TabPane forceRender={true} tab="Блок с видео" key="2">
         <Form.Item name={[lang, 'h2']} label="Заголовок h2">
           <Input placeholder="Заголовок h2" />
         </Form.Item>
+      </TabPane>
+      <TabPane forceRender={true} tab="Блок с видео" key="2">
         <Form.Item name={[lang, 'video_name']} label="Заголовок видео">
           <Input placeholder="Заголовок видео" />
         </Form.Item>
