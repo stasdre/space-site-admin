@@ -160,7 +160,6 @@ const ServiceForm = ({ works, lang }) => {
         <Form.Item
           name={[lang, 'desc']}
           label="Текст описания"
-          valuePropName="defaultValue"
           //rules={[{ required: true, message: 'Текст обязателен' }]}
         >
           <TinyEditor />
@@ -276,7 +275,6 @@ const ServiceForm = ({ works, lang }) => {
         <Form.Item
           name={[lang, 'more']}
           label="Текст"
-          valuePropName="defaultValue"
           // rules={[{ required: true, message: 'Текст обязателен' }]}
         >
           <TinyEditor />
