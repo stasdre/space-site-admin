@@ -11,8 +11,8 @@ import {
   Upload,
 } from 'antd';
 import { connect } from 'react-redux';
-import ReactQuill from 'react-quill';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { TinyEditor } from '../../TinyEditor';
 import { LangsTabs } from '../../LangsTabs';
 import 'react-quill/dist/quill.snow.css';
 import { ServiceFormEditContext } from './ServiceEdit';
@@ -113,12 +113,8 @@ const ServiceForm = ({ works, lang }) => {
         <Form.Item name={[lang, 'video_url']} label="Ссылка на видео">
           <Input placeholder="Ссылка на видео" />
         </Form.Item>
-        <Form.Item
-          name={[lang, 'description']}
-          label="Описание"
-          valuePropName="defaultValue"
-        >
-          <ReactQuill theme="snow" />
+        <Form.Item name={[lang, 'description']} label="Описание">
+          <TinyEditor />
         </Form.Item>
       </TabPane>
       <TabPane forceRender={true} tab="Main" key="3">
@@ -168,7 +164,7 @@ const ServiceForm = ({ works, lang }) => {
           valuePropName="defaultValue"
           //rules={[{ required: true, message: 'Текст обязателен' }]}
         >
-          <ReactQuill theme="snow" />
+          <TinyEditor />
         </Form.Item>
         <Form.List name={[lang, 'advantage']} label="">
           {(fields, { add, remove }) => (
@@ -284,7 +280,7 @@ const ServiceForm = ({ works, lang }) => {
           valuePropName="defaultValue"
           // rules={[{ required: true, message: 'Текст обязателен' }]}
         >
-          <ReactQuill theme="snow" />
+          <TinyEditor />
         </Form.Item>
       </TabPane>
     </Tabs>
