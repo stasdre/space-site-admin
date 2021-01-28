@@ -3,7 +3,7 @@ import { Editor } from '@tinymce/tinymce-react';
 const TinyEditor = ({ value, onChange }) => {
   return (
     <Editor
-      apiKey={process.env.TINY_KEY}
+      apiKey={process.env.REACT_APP_TINY_KEY}
       initialValue={value}
       init={{
         height: 500,
