@@ -14,7 +14,6 @@ import { connect } from 'react-redux';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { TinyEditor } from '../../TinyEditor';
 import { LangsTabs } from '../../LangsTabs';
-import 'react-quill/dist/quill.snow.css';
 import { ServiceFormEditContext } from './ServiceEdit';
 import { ServiceFormCreateContext } from './ServiceCreate';
 
